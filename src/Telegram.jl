@@ -7,10 +7,13 @@ export getMe, sendMessage
 
 mutable struct Client
   token::String
-  chat_id::Nullable{String}
+  chat_id::Union{String, Void}
   
-  function Client(token::String; chat_id::Nullable{String} = Nullable{String}())
-    new(token, chat_id)
+  function Client(token::String; chat_id = nothing)
+    if !isa(chat_id, Void)
+      chat_id = string(chat_id)
+    end
+    return new(token, chat_id)
   end
 end
 token(client::Client) = client.token
@@ -31,10 +34,10 @@ end
 
 function sendMessage(client::Client, params::Dict)
   if :chat_id in keys(params)
-    client.chat_id = Nullable{String}(string(params[:chat_id]))
+    client.chat_id = string(params[:chat_id])
   else
-    if !isnull(client.chat_id)
-      params[:chat_id] = get(client.chat_id)
+    if !isa(client.chat_id, Void)
+      params[:chat_id] = client.chat_id
     else
       throw(error("chat_id is not defined"))
     end
