@@ -50,4 +50,52 @@ function sendMessage(client::TelegramClient, params)
     query(client, "sendMessage", params = params)
 end
 
+# Methods which is checking only existence of chat_id
+for method in [:kickChatMember, :unbanChatMember, :restrictChatMember,
+               :promoteChatMember, :setChatAdministratorCustomTitle, :setChatPermissions,
+               :exportChatInviteLink, :deleteChatPhoto, :setChatTitle,
+               :setChatDescription, :pinChatMessage, :unpinChatMessage,
+               :leaveChat, :getChat, :getChatAdministrators,
+               :getChatMembersCount, :getChatMember,
+               :setChatStickerSet, :deleteChatStickerSet]
+
+    @eval function $method(client::TelegramClient; kwargs...)
+        params = Dict{Symbol, Any}(kwargs)
+        params[:chat_id] = get(params, :chat_id, client.chat_id)
+        if isempty(params[:chat_id])
+            throw(error("chat_id is not defined"))
+        end
+        query(client, String(Symbol($method)), params = params)
+    end
+
+    @eval export $method
+end
+
+# function getChat(client::TelegramClient; kwargs...)
+#     params = Dict{Symbol, Any}(kwargs)
+#     params[:chat_id] = get(params, :chat_id, client.chat_id)
+#     if isempty(params[:chat_id])
+#         throw(error("chat_id is not defined"))
+#     end
+#     query(client, "getChat", params = params)
+# end
+
+# function getChatAdministrators(client::TelegramClient; kwargs...)
+#     params = Dict{Symbol, Any}(kwargs)
+#     params[:chat_id] = get(params, :chat_id, client.chat_id)
+#     if isempty(params[:chat_id])
+#         throw(error("chat_id is not defined"))
+#     end
+#     query(client, "getChatAdministrators", params = params)
+# end
+
+# function getChatMembersCount(client::TelegramClient; kwargs...)
+#     params = Dict{Symbol, Any}(kwargs)
+#     params[:chat_id] = get(params, :chat_id, client.chat_id)
+#     if isempty(params[:chat_id])
+#         throw(error("chat_id is not defined"))
+#     end
+#     query(client, "getChatMembersCount", params = params)
+# end
+
 end # module
