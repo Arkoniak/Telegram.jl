@@ -30,6 +30,8 @@ function query(client::TelegramClient, method; params = Dict())
     req_uri = "https://api.telegram.org/bot" * token(client) * "/" * method
     headers = ["Content-Type" => "application/json"]
     json_params = JSON3.write(params)
+    json_params = replace(json_params, "." => "\\.")
+    json_params = replace(json_params, "!" => "\\!")
     JSON3.read(String(HTTP.post(req_uri, headers, json_params).body))
 end
 
