@@ -9,10 +9,14 @@ makedocs(;
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://Arkoniak.github.io/Telegram.jl",
+        siteurl="https://github.com/Arkoniak/Telegram.jl",
         assets=String[],
     ),
     pages=[
         "Home" => "index.md",
+        "API Reference" => "reference.md",
+        "Usage" => "usage.md",
+        "Developer guide" => "developers.md"
     ],
 )
 

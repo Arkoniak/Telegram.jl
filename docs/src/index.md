@@ -3,55 +3,29 @@ CurrentModule = Telegram
 ```
 
 # Telegram
+Simple [Telegram Messaging](https://telegram.org/) SDK with logging and bot facilities. Package was built with first-class support of telegram as instant message backend for various notification and reporing systems. So, simpliest way to use this package is by doing something like this
 
-Supported methods
-- [X] getMe
-- [X] sendMessage
-- [ ] forwardMessage
-- [ ] sendPhoto
-- [ ] sendAudio
-- [ ] sendDocument
-- [ ] sendVideo
-- [ ] sendAnimation
-- [ ] sendVoice
-- [ ] sendVideoNote
-- [ ] sendMediaGroup
-- [ ] sendLocation
-- [ ] editMessageLiveLocation
-- [ ] stopMessageLiveLocation
-- [ ] sendVenue
-- [ ] sendContact
-- [ ] sendPoll
-- [ ] sendDice
-- [ ] sendChatAction
-- [ ] getUserProfilePhotos
-- [ ] getFile
-- [X] kickChatMember
-- [X] unbanChatMember
-- [X] restrictChatMember
-- [X] promoteChatMember
-- [X] setChatAdministratorCustomTitle
-- [X] setChatPermissions
-- [X] exportChatInviteLink
-- [ ] setChatPhoto
-- [X] deleteChatPhoto
-- [X] setChatTitle
-- [X] setChatDescription
-- [X] pinChatMessage
-- [X] unpinChatMessage
-- [X] leaveChat
-- [X] getChat
-- [X] getChatAdministrators
-- [X] getChatMembersCount
-- [X] getChatMember
-- [X] setChatStickerSet
-- [X] deleteChatStickerSet
-- [ ] answerCallbackQuery
-- [ ] setMyCommands
-- [ ] getMyCommands
+```julia
+using Telegram, Telegram.API
+tg = TelegramClient("YOUR TOKEN", chat_id = "YOUR CHAT_ID")
 
-```@index
+# Some lengthy calculation
+# ...
+
+sendMessage(text  = "Calculation complete, result is $result")
 ```
+
+## Installation
+Package is registered so you can install it in a usual way
+
+```julia
+julia> using Pkg
+julia> Pkg.add("Telegram")
+```
+
+## General methods
+
+In addition to [API Reference](@ref) methods, there is a number of methods which add some julian functionality like bots and logging facilities.
 
 ```@autodocs
 Modules = [Telegram]

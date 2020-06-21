@@ -6,10 +6,11 @@ mutable struct TelegramClient
     token::String
     chat_id::String
     parse_mode::String
+    ep::String
 end
 
 """
-    TelegramClient(token; chat_id, parse_mode, use_globally = true)
+    TelegramClient(token; chat_id, parse_mode, ep, use_globally = true)
 
 Creates telegram client, which can be used to run telegram commands.
 
@@ -18,9 +19,10 @@ Creates telegram client, which can be used to run telegram commands.
 - `chat_id`: if set, used as default `chat_id` argument for all chat related commands. To get specific `chat_id`, send message to the bot in telegram application and use [`getUpdates`](@ref) command.
 - `parse_mode`: if set, used as default for text messaging commands.
 - `use_globally::Bool`: default `true`. If set to `true` then it current client can be used as default in all telegram commands.
+- `ep`: endpoint for telegram api. By default `https://api.telegram.org/bot` is used, but you may change it, if you are using proxy or for testing purposes. 
 """
-function TelegramClient(token; chat_id = "", parse_mode = "", use_globally = true)
-    client = TelegramClient(token, chat_id, parse_mode) 
+function TelegramClient(token; chat_id = "", parse_mode = "", ep = "https://api.telegram.org/bot", use_globally = true)
+    client = TelegramClient(token, chat_id, parse_mode, ep) 
     if use_globally
         useglobally!(client)
     end
@@ -34,18 +36,20 @@ mutable struct TelegramOpts
     timeout::Int
 end
 
-const DEFAULT_OPTS = TelegramOpts(TelegramClient("", "", ""), [:photo, :audio, :thumb, :docuemnt, :video, :animation, :voice, :video_note, :sticker, :png_sticker, :tgs_sticker, :certificate, :files], 100)
+const DEFAULT_OPTS = TelegramOpts(TelegramClient("", "", "", ""), [:photo, :audio, :thumb, :document, :video, :animation, :voice, :video_note, :sticker, :png_sticker, :tgs_sticker, :certificate, :files], 30)
 
 """
-    useglobally!(client::TelegramClient)
+    useglobally!(tg::TelegramClient)
 
-Set `client` as default. 
+Set `tg` as default client in all `Telegram.API` functions. 
 
 # Example
-client = TelegramClient("YOUR TOKEN")
-useglobally!(client)
+```julia
+tg = TelegramClient(ENV["TG_TOKEN"])
+useglobally!(tg)
 
 getMe() # new client is used in this command by default.
+```
 """
 function useglobally!(client::TelegramClient)
     DEFAULT_OPTS.client = client
@@ -71,7 +75,7 @@ process_params(x::AbstractString) = x
 process_params(x) = JSON3.write(x)   
 
 function query(client::TelegramClient, method; params = Dict())
-    req_uri = "https://api.telegram.org/bot" * token(client) * "/" * method
+    req_uri = client.ep * token(client) * "/" * method
     intersection = intersect(keys(params), DEFAULT_OPTS.upload_kw)
     if isempty(intersection)
         headers = ["Content-Type" => "application/json", "Connection" => "Keep-Alive"]
