@@ -82,7 +82,7 @@ which will send "Hello world" message to the chat defined by `ENV["TG_CHAT_ID"]`
 
 In order to override this behaviour you can set `use_globally` argument of [`TelegramClient`](@ref) function. To set previously defined client as a global, you should use [`useglobally!`](@ref).
 
-## Using Telegram API
+## Using Telegram Bot API
 
 Due to the rather large number of functions defined in [API Reference](@ref), they are hidden behind module declaration, so by default they should be prefixed with `Telegram.`
 
@@ -104,7 +104,7 @@ TelegramClient(ENV["TG_TOKEN"])
 TG.getMe()
 ```
 
-or you can import all telegram API by `using Telegram.API`, in this scenario you do not need to use any prefixes
+or you can import all telegram Bot API by `using Telegram.API`, in this scenario you do not need to use any prefixes
 ```julia
 using Telegram
 using Telegram.API

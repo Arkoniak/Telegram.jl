@@ -4,6 +4,8 @@ CurrentModule = Telegram
 
 Word of caution: this documentation is generated automatically from [https://core.telegram.org/bots/api](https://core.telegram.org/bots/api) and can be incomplete or wrongly formatted. Also this documentation do not contain information about general principles of the Telegram API and response objects. So, if you have any doubts, consult original [api documentation](https://core.telegram.org/bots/api) and consider it as a ground truth. These docs were generated only for simpler navigation and better help hints in REPL and editors.
 
+Please notice that this package implements the [Bot API](https://core.telegram.org/api#bot-api). The Telegram Bot API is an API specifically for bots, which is simpler but less customisable. It acts as an intermediary between bots and the [Telegram API](https://core.telegram.org/api#telegram-api) which allow you to build your own customized Telegram clients.
+
 All API functions have [`TelegramClient`](@ref) as optional positional argument, which means that if it is not set explicitly, than global client is used, which is usually created during initial construction or by explicit call of [`useglobally!`](@ref) function.
 
 All arguments usually have `String`/`Boolean`/`Integer` types which is in one to one correspondence with julian types. Special arguments like `document`, `photo` and the like, which are intended for file sending, can accept either `IOStream` argument as in `open("picture.png", "r")` or `Pair{String, IO}` in case of in-memory `IO` objects without names. Read [Usage](@ref) for additional info.

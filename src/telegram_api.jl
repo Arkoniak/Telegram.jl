@@ -450,7 +450,7 @@ Use this method to restrict a user in a supergroup. The bot must be an administr
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)
 - `user_id`: (Integer) Unique identifier of the target user
-- `permissions`: (ChatPermissions) New user permissions
+- `permissions`: (ChatPermissions) A JSON-serialized object for new user permissions
 
 # Optional arguments
 - `until_date`: (Integer) Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
@@ -918,7 +918,7 @@ Use this method to send invoices. On success, the sent [Message](https://core.te
 - `prices`: (Array of LabeledPrice) Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
 
 # Optional arguments
-- `provider_data`: (String) JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
+- `provider_data`: (String) A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
 - `photo_url`: (String) URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
 - `photo_size`: (Integer) Photo size
 - `photo_width`: (Integer) Photo width
