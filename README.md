@@ -30,9 +30,9 @@ julia> Pkg.add("Telegram")
 
 # Usage
 
-## Telegram API
+## Telegram Bot API
 
-Usage is straightforward, [Telegram API methods](https://core.telegram.org/bots/api#available-methods) are in one to one correspondence with this Julia wrapper. You need to create connection and then simply call necessary methods
+Usage is straightforward, [Telegram Bot API methods](https://core.telegram.org/bots/api#available-methods) are in one to one correspondence with this Julia wrapper. You need to create connection and then simply call necessary methods
 
 ```julia
 julia> using Telegram, Telegram.API
