@@ -1,7 +1,7 @@
 name = "Telegram"
 uuid = "1da6f4ae-116c-4c38-8ee9-19974ff3601d"
 authors = ["Andrey Oskin"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"

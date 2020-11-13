@@ -12,7 +12,7 @@ pkg> activate .
 
 After that you can exit julia session and run
 ```sh
-sh> julia make.jl
+sh> julia --project=. make.jl
 ```
 command. It will create two files:
 * `src/telegram_api.jl` which contains all methods names and corresponding docstrings

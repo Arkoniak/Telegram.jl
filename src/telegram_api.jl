@@ -25,8 +25,10 @@ If you'd like to make sure that the Webhook request comes from Telegram, we reco
 
 # Optional arguments
 - `certificate`: (InputFile) Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
+- `ip_address`: (String) The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS
 - `max_connections`: (Integer) Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.
 - `allowed_updates`: (Array of String) A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See [Update](https://core.telegram.org/bots/api#update) for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+- `drop_pending_updates`: (Boolean) Pass True to drop all pending updates
 Notes1. You will not be able to receive updates using [`getUpdates`](@ref) for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
 
 NEW! If you're having any trouble setting up webhooks, please check out this amazing guide to Webhooks.
@@ -36,7 +38,10 @@ NEW! If you're having any trouble setting up webhooks, please check out this ama
 (:deleteWebhook, """
 	deleteWebhook([tg::TelegramClient]; kwargs...)
 
-Use this method to remove webhook integration if you decide to switch back to [`getUpdates`](@ref). Returns True on success. Requires no parameters.
+Use this method to remove webhook integration if you decide to switch back to [`getUpdates`](@ref). Returns True on success.
+
+# Optional arguments
+- `drop_pending_updates`: (Boolean) Pass True to drop all pending updates
 
 [Function documentation source](https://core.telegram.org/bots/api#deletewebhook)
 """),
@@ -54,6 +59,20 @@ A simple method for testing your bot's auth token. Requires no parameters. Retur
 
 [Function documentation source](https://core.telegram.org/bots/api#getme)
 """),
+(:logOut, """
+	logOut([tg::TelegramClient]; kwargs...)
+
+Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
+
+[Function documentation source](https://core.telegram.org/bots/api#logout)
+"""),
+(:close, """
+	close([tg::TelegramClient]; kwargs...)
+
+Use this method to close the bot instance before moving it from one local server to another. You need to delete the webhook before calling this method to ensure that the bot isn't launched again after server restart. The method will return error 429 in the first 10 minutes after the bot is launched. Returns True on success. Requires no parameters.
+
+[Function documentation source](https://core.telegram.org/bots/api#close)
+"""),
 (:sendMessage, """
 	sendMessage([tg::TelegramClient]; kwargs...)
 
@@ -65,9 +84,11 @@ Use this method to send text messages. On success, the sent [Message](https://co
 
 # Optional arguments
 - `parse_mode`: (String) Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `entities`: (Array of MessageEntity) List of special entities that appear in message text, which can be specified instead of parse_mode
 - `disable_web_page_preview`: (Boolean) Disables link previews for links in this message
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendmessage)
@@ -87,6 +108,27 @@ Use this method to forward messages of any kind. On success, the sent [Message](
 
 [Function documentation source](https://core.telegram.org/bots/api#forwardmessage)
 """),
+(:copyMessage, """
+	copyMessage([tg::TelegramClient]; kwargs...)
+
+Use this method to copy messages of any kind. The method is analogous to the method [forwardMessages](https://core.telegram.org/bots/api#forwardmessages), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api#messageid) of the sent message on success.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+- `from_chat_id`: (Integer or String) Unique identifier for the chat where the original message was sent (or channel username in the format `@channelusername`)
+- `message_id`: (Integer) Message identifier in the chat specified in from_chat_id
+
+# Optional arguments
+- `caption`: (String) New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
+- `parse_mode`: (String) Mode for parsing entities in the new caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the new caption, which can be specified instead of parse_mode
+- `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
+- `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
+- `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+
+[Function documentation source](https://core.telegram.org/bots/api#copymessage)
+"""),
 (:sendPhoto, """
 	sendPhoto([tg::TelegramClient]; kwargs...)
 
@@ -99,8 +141,10 @@ Use this method to send photos. On success, the sent [Message](https://core.tele
 # Optional arguments
 - `caption`: (String) Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendphoto)
@@ -119,12 +163,14 @@ For sending voice messages, use the [`sendVoice`](@ref) method instead.
 # Optional arguments
 - `caption`: (String) Audio caption, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `duration`: (Integer) Duration of the audio in seconds
 - `performer`: (String) Performer
 - `title`: (String) Track name
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendaudio)
@@ -142,8 +188,11 @@ Use this method to send general files. On success, the sent [Message](https://co
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `disable_content_type_detection`: (Boolean) Disables automatic server-side content type detection for files uploaded using multipart/form-data
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#senddocument)
@@ -164,9 +213,11 @@ Use this method to send video files, Telegram clients support mp4 videos (other 
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `supports_streaming`: (Boolean) Pass True, if the uploaded video is suitable for streaming
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendvideo)
@@ -187,8 +238,10 @@ Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without s
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendanimation)
@@ -205,9 +258,11 @@ Use this method to send audio files, if you want Telegram clients to display the
 # Optional arguments
 - `caption`: (String) Voice message caption, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `duration`: (Integer) Duration of the voice message in seconds
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendvoice)
@@ -227,6 +282,7 @@ As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minut
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendvideonote)
@@ -234,15 +290,16 @@ As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minut
 (:sendMediaGroup, """
 	sendMediaGroup([tg::TelegramClient]; kwargs...)
 
-Use this method to send a group of photos or videos as an album. On success, an array of the sent [Messages](https://core.telegram.org/bots/api#message) is returned.
+Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of [Messages](https://core.telegram.org/bots/api#message) that were sent is returned.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
-- `media`: (Array of InputMediaPhoto and InputMediaVideo) A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
+- `media`: (Array of InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo) A JSON-serialized array describing messages to be sent, must include 2-10 items
 
 # Optional arguments
-- `disable_notification`: (Boolean) Sends the messages silently. Users will receive a notification with no sound.
+- `disable_notification`: (Boolean) Sends messages silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the messages are a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 
 [Function documentation source](https://core.telegram.org/bots/api#sendmediagroup)
 """),
@@ -257,9 +314,13 @@ Use this method to send point on the map. On success, the sent [Message](https:/
 - `longitude`: (Float number) Longitude of the location
 
 # Optional arguments
+- `horizontal_accuracy`: (Float number) The radius of uncertainty for the location, measured in meters; 0-1500
 - `live_period`: (Integer) Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
+- `heading`: (Integer) For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+- `proximity_alert_radius`: (Integer) For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendlocation)
@@ -267,7 +328,7 @@ Use this method to send point on the map. On success, the sent [Message](https:/
 (:editMessageLiveLocation, """
 	editMessageLiveLocation([tg::TelegramClient]; kwargs...)
 
-Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to [`stopMessageLiveLocation`](@ref). On success, if the edited message was sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to [`stopMessageLiveLocation`](@ref). On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Required arguments
 - `latitude`: (Float number) Latitude of new location
@@ -277,6 +338,9 @@ Use this method to edit live location messages. A location can be edited until i
 - `chat_id`: (Integer or String) Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 - `message_id`: (Integer) Required if inline_message_id is not specified. Identifier of the message to edit
 - `inline_message_id`: (String) Required if chat_id and message_id are not specified. Identifier of the inline message
+- `horizontal_accuracy`: (Float number) The radius of uncertainty for the location, measured in meters; 0-1500
+- `heading`: (Integer) Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+- `proximity_alert_radius`: (Integer) Maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for a new inline keyboard.
 
 [Function documentation source](https://core.telegram.org/bots/api#editmessagelivelocation)
@@ -309,8 +373,11 @@ Use this method to send information about a venue. On success, the sent [Message
 # Optional arguments
 - `foursquare_id`: (String) Foursquare identifier of the venue
 - `foursquare_type`: (String) Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+- `google_place_id`: (String) Google Places identifier of the venue
+- `google_place_type`: (String) Google Places type of the venue. (See supported types.)
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendvenue)
@@ -330,6 +397,7 @@ Use this method to send phone contacts. On success, the sent [Message](https://c
 - `vcard`: (String) Additional data about the contact in the form of a vCard, 0-2048 bytes
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendcontact)
@@ -341,7 +409,7 @@ Use this method to send a native poll. On success, the sent [Message](https://co
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
-- `question`: (String) Poll question, 1-255 characters
+- `question`: (String) Poll question, 1-300 characters
 - `options`: (Array of String) A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
 
 # Optional arguments
@@ -351,11 +419,13 @@ Use this method to send a native poll. On success, the sent [Message](https://co
 - `correct_option_id`: (Integer) 0-based identifier of the correct answer option, required for polls in quiz mode
 - `explanation`: (String) Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
 - `explanation_parse_mode`: (String) Mode for parsing entities in the explanation. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `explanation_entities`: (Array of MessageEntity) List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
 - `open_period`: (Integer) Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
 - `close_date`: (Integer) Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
 - `is_closed`: (Boolean) Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendpoll)
@@ -369,9 +439,10 @@ Use this method to send an animated emoji that will display a random value. On s
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 
 # Optional arguments
-- `emoji`: (String) Emoji on which the dice throw animation is based. Currently, must be one of “”, “”, or “”. Dice can have values 1-6 for “” and “”, and values 1-5 for “”. Defaults to “”
+- `emoji`: (String) Emoji on which the dice throw animation is based. Currently, must be one of “”, “”, “”, “”, or “”. Dice can have values 1-6 for “” and “”, values 1-5 for “” and “”, and values 1-64 for “”. Defaults to “”
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#senddice)
@@ -434,11 +505,14 @@ Use this method to kick a user from a group, a supergroup or a channel. In the c
 (:unbanChatMember, """
 	unbanChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
+Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target group or username of the target supergroup or channel (in the format `@username`)
 - `user_id`: (Integer) Unique identifier of the target user
+
+# Optional arguments
+- `only_if_banned`: (Boolean) Do nothing if the user is not banned
 
 [Function documentation source](https://core.telegram.org/bots/api#unbanchatmember)
 """),
@@ -467,6 +541,7 @@ Use this method to promote or demote a user in a supergroup or a channel. The bo
 - `user_id`: (Integer) Unique identifier of the target user
 
 # Optional arguments
+- `is_anonymous`: (Boolean) Pass True, if the administrator's presence in the chat is hidden
 - `can_change_info`: (Boolean) Pass True, if the administrator can change chat title, photo and other settings
 - `can_post_messages`: (Boolean) Pass True, if the administrator can create channel posts, channels only
 - `can_edit_messages`: (Boolean) Pass True, if the administrator can edit messages of other users and can pin messages, channels only
@@ -561,26 +636,39 @@ Use this method to change the description of a group, a supergroup or a channel.
 (:pinChatMessage, """
 	pinChatMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 - `message_id`: (Integer) Identifier of a message to pin
 
 # Optional arguments
-- `disable_notification`: (Boolean) Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.
+- `disable_notification`: (Boolean) Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.
 
 [Function documentation source](https://core.telegram.org/bots/api#pinchatmessage)
 """),
 (:unpinChatMessage, """
 	unpinChatMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 
+# Optional arguments
+- `message_id`: (Integer) Identifier of a message to unpin. If not specified, the most recent pinned message (by sending date) will be unpinned.
+
 [Function documentation source](https://core.telegram.org/bots/api#unpinchatmessage)
+"""),
+(:unpinAllChatMessages, """
+	unpinAllChatMessages([tg::TelegramClient]; kwargs...)
+
+Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+
+[Function documentation source](https://core.telegram.org/bots/api#unpinallchatmessages)
 """),
 (:leaveChat, """
 	leaveChat([tg::TelegramClient]; kwargs...)
@@ -692,7 +780,7 @@ Use this method to get the current list of the bot's commands. Requires no param
 (:editMessageText, """
 	editMessageText([tg::TelegramClient]; kwargs...)
 
-Use this method to edit text and [game](https://core.telegram.org/bots/api#games) messages. On success, if edited message is sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit text and [game](https://core.telegram.org/bots/api#games) messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Required arguments
 - `text`: (String) New text of the message, 1-4096 characters after entities parsing
@@ -702,6 +790,7 @@ Use this method to edit text and [game](https://core.telegram.org/bots/api#games
 - `message_id`: (Integer) Required if inline_message_id is not specified. Identifier of the message to edit
 - `inline_message_id`: (String) Required if chat_id and message_id are not specified. Identifier of the inline message
 - `parse_mode`: (String) Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `entities`: (Array of MessageEntity) List of special entities that appear in message text, which can be specified instead of parse_mode
 - `disable_web_page_preview`: (Boolean) Disables link previews for links in this message
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard.
 
@@ -710,7 +799,7 @@ Use this method to edit text and [game](https://core.telegram.org/bots/api#games
 (:editMessageCaption, """
 	editMessageCaption([tg::TelegramClient]; kwargs...)
 
-Use this method to edit captions of messages. On success, if edited message is sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Optional arguments
 - `chat_id`: (Integer or String) Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -718,6 +807,7 @@ Use this method to edit captions of messages. On success, if edited message is s
 - `inline_message_id`: (String) Required if chat_id and message_id are not specified. Identifier of the inline message
 - `caption`: (String) New caption of the message, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the message caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
+- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard.
 
 [Function documentation source](https://core.telegram.org/bots/api#editmessagecaption)
@@ -725,7 +815,7 @@ Use this method to edit captions of messages. On success, if edited message is s
 (:editMessageMedia, """
 	editMessageMedia([tg::TelegramClient]; kwargs...)
 
-Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Required arguments
 - `media`: (InputMedia) A JSON-serialized object for a new media content of the message
@@ -741,7 +831,7 @@ Use this method to edit animation, audio, document, photo, or video messages. If
 (:editMessageReplyMarkup, """
 	editMessageReplyMarkup([tg::TelegramClient]; kwargs...)
 
-Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Optional arguments
 - `chat_id`: (Integer or String) Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -788,6 +878,7 @@ Use this method to send static .WEBP or animated .TGS stickers. On success, the 
 # Optional arguments
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply) Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendsticker)
@@ -932,6 +1023,7 @@ Use this method to send invoices. On success, the sent [Message](https://core.te
 - `is_flexible`: (Boolean) Pass True, if the final price depends on the shipping method
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard. If empty, one 'Pay `total price`' button will be shown. If not empty, the first button must be a Pay button.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendinvoice)
@@ -990,6 +1082,7 @@ Use this method to send a game. On success, the sent [Message](https://core.tele
 # Optional arguments
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
+- `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
 
 [Function documentation source](https://core.telegram.org/bots/api#sendgame)
