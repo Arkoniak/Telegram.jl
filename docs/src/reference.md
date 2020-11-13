@@ -41,8 +41,11 @@ getWebhookInfo
 ## Available methods
 
 * [`Telegram.getMe`](@ref)
+* [`Telegram.logOut`](@ref)
+* [`Telegram.close`](@ref)
 * [`Telegram.sendMessage`](@ref)
 * [`Telegram.forwardMessage`](@ref)
+* [`Telegram.copyMessage`](@ref)
 * [`Telegram.sendPhoto`](@ref)
 * [`Telegram.sendAudio`](@ref)
 * [`Telegram.sendDocument`](@ref)
@@ -74,6 +77,7 @@ getWebhookInfo
 * [`Telegram.setChatDescription`](@ref)
 * [`Telegram.pinChatMessage`](@ref)
 * [`Telegram.unpinChatMessage`](@ref)
+* [`Telegram.unpinAllChatMessages`](@ref)
 * [`Telegram.leaveChat`](@ref)
 * [`Telegram.getChat`](@ref)
 * [`Telegram.getChatAdministrators`](@ref)
@@ -90,11 +94,23 @@ getMe
 ```
 
 ```@docs
+logOut
+```
+
+```@docs
+close
+```
+
+```@docs
 sendMessage
 ```
 
 ```@docs
 forwardMessage
+```
+
+```@docs
+copyMessage
 ```
 
 ```@docs
@@ -219,6 +235,10 @@ pinChatMessage
 
 ```@docs
 unpinChatMessage
+```
+
+```@docs
+unpinAllChatMessages
 ```
 
 ```@docs
