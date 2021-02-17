@@ -1,8 +1,8 @@
 name: TagBot
 on:
   issue_comment:  # THIS BIT IS NEW
-  types:
-    - created
+    types:
+      - created
   workflow_dispatch:
 jobs:
   TagBot:
