@@ -136,7 +136,7 @@ Use this method to send photos. On success, the sent [Message](https://core.tele
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
-- `photo`: (InputFile or String) Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
+- `photo`: (InputFile or String) Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 
 # Optional arguments
 - `caption`: (String) Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
@@ -458,7 +458,7 @@ We only recommend using this method when a response from the bot will take a not
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
-- `action`: (String) Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for [text messages](https://core.telegram.org/bots/api#sendmessage), upload_photo for [photos](https://core.telegram.org/bots/api#sendphoto), record_video or upload_video for [videos](https://core.telegram.org/bots/api#sendvideo), record_audio or upload_audio for [audio files](https://core.telegram.org/bots/api#sendaudio), upload_document for [general files](https://core.telegram.org/bots/api#senddocument), find_location for [location data](https://core.telegram.org/bots/api#sendlocation), record_video_note or upload_video_note for [video notes](https://core.telegram.org/bots/api#sendvideonote).
+- `action`: (String) Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for [text messages](https://core.telegram.org/bots/api#sendmessage), upload_photo for [photos](https://core.telegram.org/bots/api#sendphoto), record_video or upload_video for [videos](https://core.telegram.org/bots/api#sendvideo), record_voice or upload_voice for [voice notes](https://core.telegram.org/bots/api#sendvoice), upload_document for [general files](https://core.telegram.org/bots/api#senddocument), find_location for [location data](https://core.telegram.org/bots/api#sendlocation), record_video_note or upload_video_note for [video notes](https://core.telegram.org/bots/api#sendvideonote).
 
 [Function documentation source](https://core.telegram.org/bots/api#sendchataction)
 """),
@@ -491,14 +491,14 @@ Note: This function may not preserve the original file name and MIME type. You s
 (:kickChatMember, """
 	kickChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)
 - `user_id`: (Integer) Unique identifier of the target user
 
 # Optional arguments
-- `until_date`: (Integer) Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever
+- `until_date`: (Integer) Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
 
 [Function documentation source](https://core.telegram.org/bots/api#kickchatmember)
 """),
