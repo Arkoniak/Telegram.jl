@@ -71,6 +71,9 @@ getWebhookInfo
 * [`Telegram.setChatAdministratorCustomTitle`](@ref)
 * [`Telegram.setChatPermissions`](@ref)
 * [`Telegram.exportChatInviteLink`](@ref)
+* [`Telegram.createChatInviteLink`](@ref)
+* [`Telegram.editChatInviteLink`](@ref)
+* [`Telegram.revokeChatInviteLink`](@ref)
 * [`Telegram.setChatPhoto`](@ref)
 * [`Telegram.deleteChatPhoto`](@ref)
 * [`Telegram.setChatTitle`](@ref)
@@ -211,6 +214,18 @@ setChatPermissions
 
 ```@docs
 exportChatInviteLink
+```
+
+```@docs
+createChatInviteLink
+```
+
+```@docs
+editChatInviteLink
+```
+
+```@docs
+revokeChatInviteLink
 ```
 
 ```@docs

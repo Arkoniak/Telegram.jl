@@ -21,7 +21,7 @@ Creates telegram client, which can be used to run telegram commands.
 - `use_globally::Bool`: default `true`. If set to `true` then it current client can be used as default in all telegram commands.
 - `ep`: endpoint for telegram api. By default `https://api.telegram.org/bot` is used, but you may change it, if you are using proxy or for testing purposes. 
 """
-function TelegramClient(token; chat_id = "", parse_mode = "", ep = "https://api.telegram.org/bot", use_globally = true)
+function TelegramClient(token = get(ENV, "TELEGRAM_BOT_TOKEN", ""); chat_id = get(ENV, "TELEGRAM_BOT_CHAT_ID" ,""), parse_mode = "", ep = "https://api.telegram.org/bot", use_globally = true)
     client = TelegramClient(token, chat_id, parse_mode, ep) 
     if use_globally
         useglobally!(client)
@@ -36,7 +36,7 @@ mutable struct TelegramOpts
     timeout::Int
 end
 
-const DEFAULT_OPTS = TelegramOpts(TelegramClient("", "", "", ""), [:photo, :audio, :thumb, :document, :video, :animation, :voice, :video_note, :sticker, :png_sticker, :tgs_sticker, :certificate, :files], 30)
+const DEFAULT_OPTS = TelegramOpts(TelegramClient(use_globally = false), [:photo, :audio, :thumb, :document, :video, :animation, :voice, :video_note, :sticker, :png_sticker, :tgs_sticker, :certificate, :files], 30)
 
 """
     useglobally!(tg::TelegramClient)
@@ -57,7 +57,18 @@ function useglobally!(client::TelegramClient)
     return client
 end
 
-token(client::TelegramClient) = client.token
+function token(client::TelegramClient)
+    isempty(client.token) || return client.token
+    token = get(ENV, "TELEGRAM_BOT_TOKEN", "")
+    isempty(token) && @warn "Telegram token is empty"
+    return token
+end
+
+function chatid(client::TelegramClient)
+    isempty(client.chat_id) || return client.chat_id
+    chat_id = get(ENV, "TELEGRAM_BOT_CHAT_ID", "")
+    return chat_id
+end
 
 ioify(elem::IO) = elem
 ioify(elem) = IOBuffer(elem)
@@ -113,7 +124,7 @@ Sends `method` request to the telegram. It is recommended to use only if some of
 """
 function apiquery(method, client::TelegramClient = DEFAULT_OPTS.client; kwargs...)
     params = Dict{Symbol, Any}(kwargs)
-    params[:chat_id] = get(params, :chat_id, client.chat_id)
+    params[:chat_id] = get(params, :chat_id, chatid(client))
     params[:parse_mode] = get(params, :parse_mode, client.parse_mode)
-    query(client, "method", params = params)
+    query(client, method, params = params)
 end

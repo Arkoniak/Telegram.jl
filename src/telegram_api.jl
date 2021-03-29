@@ -8,7 +8,7 @@ Use this method to receive incoming updates using long polling (wiki). An Array 
 - `offset`: (Integer) Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as [`getUpdates`](@ref) is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
 - `limit`: (Integer) Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.
 - `timeout`: (Integer) Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
-- `allowed_updates`: (Array of String) A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See [Update](https://core.telegram.org/bots/api#update) for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
+- `allowed_updates`: (Array of String) A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See [Update](https://core.telegram.org/bots/api#update) for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
 Notes1. This method will not work if an outgoing webhook is set up.2. In order to avoid getting duplicate updates, recalculate offset after each server response.
 
 [Function documentation source](https://core.telegram.org/bots/api#getupdates)
@@ -27,7 +27,7 @@ If you'd like to make sure that the Webhook request comes from Telegram, we reco
 - `certificate`: (InputFile) Upload your public key certificate so that the root certificate in use can be checked. See our self-signed guide for details.
 - `ip_address`: (String) The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS
 - `max_connections`: (Integer) Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput.
-- `allowed_updates`: (Array of String) A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See [Update](https://core.telegram.org/bots/api#update) for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
+- `allowed_updates`: (Array of String) A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See [Update](https://core.telegram.org/bots/api#update) for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.Please note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time.
 - `drop_pending_updates`: (Boolean) Pass True to drop all pending updates
 Notes1. You will not be able to receive updates using [`getUpdates`](@ref) for as long as an outgoing webhook is set up.2. To use a self-signed certificate, you need to upload your public key certificate using certificate parameter. Please upload as InputFile, sending a String will not work.3. Ports currently supported for Webhooks: 443, 80, 88, 8443.
 
@@ -111,7 +111,7 @@ Use this method to forward messages of any kind. On success, the sent [Message](
 (:copyMessage, """
 	copyMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to copy messages of any kind. The method is analogous to the method [forwardMessages](https://core.telegram.org/bots/api#forwardmessages), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api#messageid) of the sent message on success.
+Use this method to copy messages of any kind. The method is analogous to the method [`forwardMessage`](@ref), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api#messageid) of the sent message on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -439,7 +439,7 @@ Use this method to send an animated emoji that will display a random value. On s
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 
 # Optional arguments
-- `emoji`: (String) Emoji on which the dice throw animation is based. Currently, must be one of “”, “”, “”, “”, or “”. Dice can have values 1-6 for “” and “”, values 1-5 for “” and “”, and values 1-64 for “”. Defaults to “”
+- `emoji`: (String) Emoji on which the dice throw animation is based. Currently, must be one of “”, “”, “”, “”, “”, or “”. Dice can have values 1-6 for “”, “” and “”, values 1-5 for “” and “”, and values 1-64 for “”. Defaults to “”
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
 - `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
@@ -499,6 +499,7 @@ Use this method to kick a user from a group, a supergroup or a channel. In the c
 
 # Optional arguments
 - `until_date`: (Integer) Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
+- `revoke_messages`: (Boolean) Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
 
 [Function documentation source](https://core.telegram.org/bots/api#kickchatmember)
 """),
@@ -542,14 +543,16 @@ Use this method to promote or demote a user in a supergroup or a channel. The bo
 
 # Optional arguments
 - `is_anonymous`: (Boolean) Pass True, if the administrator's presence in the chat is hidden
-- `can_change_info`: (Boolean) Pass True, if the administrator can change chat title, photo and other settings
+- `can_manage_chat`: (Boolean) Pass True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege
 - `can_post_messages`: (Boolean) Pass True, if the administrator can create channel posts, channels only
 - `can_edit_messages`: (Boolean) Pass True, if the administrator can edit messages of other users and can pin messages, channels only
 - `can_delete_messages`: (Boolean) Pass True, if the administrator can delete messages of other users
-- `can_invite_users`: (Boolean) Pass True, if the administrator can invite new users to the chat
+- `can_manage_voice_chats`: (Boolean) Pass True, if the administrator can manage voice chats
 - `can_restrict_members`: (Boolean) Pass True, if the administrator can restrict, ban or unban chat members
-- `can_pin_messages`: (Boolean) Pass True, if the administrator can pin messages, supergroups only
 - `can_promote_members`: (Boolean) Pass True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by him)
+- `can_change_info`: (Boolean) Pass True, if the administrator can change chat title, photo and other settings
+- `can_invite_users`: (Boolean) Pass True, if the administrator can invite new users to the chat
+- `can_pin_messages`: (Boolean) Pass True, if the administrator can pin messages, supergroups only
 
 [Function documentation source](https://core.telegram.org/bots/api#promotechatmember)
 """),
@@ -579,14 +582,54 @@ Use this method to set default chat permissions for all members. The bot must be
 (:exportChatInviteLink, """
 	exportChatInviteLink([tg::TelegramClient]; kwargs...)
 
-Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 
-Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using [`exportChatInviteLink`](@ref) — after this the link will become available to the bot via the [`getChat`](@ref) method. If your bot needs to generate a new invite link replacing its previous one, use [`exportChatInviteLink`](@ref) again.
+Note: Each administrator in a chat generates their own invite links. Bots can't use invite links generated by other administrators. If you want your bot to work with invite links, it will need to generate its own link using [`exportChatInviteLink`](@ref) or by calling the [`getChat`](@ref) method. If your bot needs to generate a new primary invite link replacing its previous one, use [`exportChatInviteLink`](@ref) again.
 
 [Function documentation source](https://core.telegram.org/bots/api#exportchatinvitelink)
+"""),
+(:createChatInviteLink, """
+	createChatInviteLink([tg::TelegramClient]; kwargs...)
+
+Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method [`revokeChatInviteLink`](@ref). Returns the new invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+
+# Optional arguments
+- `expire_date`: (Integer) Point in time (Unix timestamp) when the link will expire
+- `member_limit`: (Integer) Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+
+[Function documentation source](https://core.telegram.org/bots/api#createchatinvitelink)
+"""),
+(:editChatInviteLink, """
+	editChatInviteLink([tg::TelegramClient]; kwargs...)
+
+Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+- `invite_link`: (String) The invite link to edit
+
+# Optional arguments
+- `expire_date`: (Integer) Point in time (Unix timestamp) when the link will expire
+- `member_limit`: (Integer) Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+
+[Function documentation source](https://core.telegram.org/bots/api#editchatinvitelink)
+"""),
+(:revokeChatInviteLink, """
+	revokeChatInviteLink([tg::TelegramClient]; kwargs...)
+
+Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier of the target chat or username of the target channel (in the format `@channelusername`)
+- `invite_link`: (String) The invite link to revoke
+
+[Function documentation source](https://core.telegram.org/bots/api#revokechatinvitelink)
 """),
 (:setChatPhoto, """
 	setChatPhoto([tg::TelegramClient]; kwargs...)
