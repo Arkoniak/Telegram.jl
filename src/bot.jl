@@ -25,7 +25,8 @@ function run_bot(f, tg::TelegramClient = DEFAULT_OPTS.client; timeout = 20, brut
 
     while true
         try
-            res = offset == -1 ? getUpdates(tg, timeout = timeout) : getUpdates(tg, timeout = timeout, offset = offset, ignore_errors = false)
+            ignore_errors = true
+            res = offset == -1 ? getUpdates(tg, timeout = timeout) : (ignore_errors = false;getUpdates(tg, timeout = timeout, offset = offset) )
             for msg in res
                 try
                     f(msg)
