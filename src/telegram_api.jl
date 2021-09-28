@@ -96,7 +96,7 @@ Use this method to send text messages. On success, the sent [Message](https://co
 (:forwardMessage, """
 	forwardMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to forward messages of any kind. On success, the sent [Message](https://core.telegram.org/bots/api#message) is returned.
+Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent [Message](https://core.telegram.org/bots/api#message) is returned.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -111,7 +111,7 @@ Use this method to forward messages of any kind. On success, the sent [Message](
 (:copyMessage, """
 	copyMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to copy messages of any kind. The method is analogous to the method [`forwardMessage`](@ref), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api#messageid) of the sent message on success.
+Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method [`forwardMessage`](@ref), but the copied message doesn't have a link to the original message. Returns the [MessageId](https://core.telegram.org/bots/api#messageid) of the sent message on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -348,7 +348,7 @@ Use this method to edit live location messages. A location can be edited until i
 (:stopMessageLiveLocation, """
 	stopMessageLiveLocation([tg::TelegramClient]; kwargs...)
 
-Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to stop updating a live location message before live_period expires. On success, if the message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Optional arguments
 - `chat_id`: (Integer or String) Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -488,10 +488,10 @@ Note: This function may not preserve the original file name and MIME type. You s
 
 [Function documentation source](https://core.telegram.org/bots/api#getfile)
 """),
-(:kickChatMember, """
-	kickChatMember([tg::TelegramClient]; kwargs...)
+(:banChatMember, """
+	banChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to kick a user from a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)
@@ -501,12 +501,12 @@ Use this method to kick a user from a group, a supergroup or a channel. In the c
 - `until_date`: (Integer) Date when the user will be unbanned, unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only.
 - `revoke_messages`: (Boolean) Pass True to delete all messages from the chat for the user that is being removed. If False, the user will be able to see messages in the group that were sent before the user was removed. Always True for supergroups and channels.
 
-[Function documentation source](https://core.telegram.org/bots/api#kickchatmember)
+[Function documentation source](https://core.telegram.org/bots/api#banchatmember)
 """),
 (:unbanChatMember, """
 	unbanChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
+Use this method to unban a previously banned user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. By default, this method guarantees that after the call the user is not a member of the chat, but will be able to join it. So if the user is a member of the chat they will also be removed from the chat. If you don't want this, use the parameter only_if_banned. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target group or username of the target supergroup or channel (in the format `@username`)
@@ -743,15 +743,15 @@ Use this method to get a list of administrators in a chat. On success, returns a
 
 [Function documentation source](https://core.telegram.org/bots/api#getchatadministrators)
 """),
-(:getChatMembersCount, """
-	getChatMembersCount([tg::TelegramClient]; kwargs...)
+(:getChatMemberCount, """
+	getChatMemberCount([tg::TelegramClient]; kwargs...)
 
 Use this method to get the number of members in a chat. Returns Int on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup or channel (in the format `@channelusername`)
 
-[Function documentation source](https://core.telegram.org/bots/api#getchatmemberscount)
+[Function documentation source](https://core.telegram.org/bots/api#getchatmembercount)
 """),
 (:getChatMember, """
 	getChatMember([tg::TelegramClient]; kwargs...)
@@ -806,17 +806,36 @@ Alternatively, the user can be redirected to the specified Game URL. For this op
 (:setMyCommands, """
 	setMyCommands([tg::TelegramClient]; kwargs...)
 
-Use this method to change the list of the bot's commands. Returns True on success.
+Use this method to change the list of the bot's commands. See https://core.telegram.org/bots#commands for more details about bot commands. Returns True on success.
 
 # Required arguments
 - `commands`: (Array of BotCommand) A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
 
+# Optional arguments
+- `scope`: (BotCommandScope) A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api#botcommandscopedefault).
+- `language_code`: (String) A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
+
 [Function documentation source](https://core.telegram.org/bots/api#setmycommands)
+"""),
+(:deleteMyCommands, """
+	deleteMyCommands([tg::TelegramClient]; kwargs...)
+
+Use this method to delete the list of the bot's commands for the given scope and user language. After deletion, [higher level commands](https://core.telegram.org/bots/api#determining-list-of-commands) will be shown to affected users. Returns True on success.
+
+# Optional arguments
+- `scope`: (BotCommandScope) A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api#botcommandscopedefault).
+- `language_code`: (String) A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
+
+[Function documentation source](https://core.telegram.org/bots/api#deletemycommands)
 """),
 (:getMyCommands, """
 	getMyCommands([tg::TelegramClient]; kwargs...)
 
-Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of [BotCommand](https://core.telegram.org/bots/api#botcommand) on success.
+Use this method to get the current list of the bot's commands for the given scope and user language. Returns Array of [BotCommand](https://core.telegram.org/bots/api#botcommand) on success. If commands aren't set, an empty list is returned.
+
+# Optional arguments
+- `scope`: (BotCommandScope) A JSON-serialized object, describing scope of users. Defaults to [BotCommandScopeDefault](https://core.telegram.org/bots/api#botcommandscopedefault).
+- `language_code`: (String) A two-letter ISO 639-1 language code or an empty string
 
 [Function documentation source](https://core.telegram.org/bots/api#getmycommands)
 """),
@@ -858,7 +877,7 @@ Use this method to edit captions of messages. On success, if the edited message 
 (:editMessageMedia, """
 	editMessageMedia([tg::TelegramClient]; kwargs...)
 
-Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
+Use this method to edit animation, audio, document, photo, or video messages. If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL. On success, if the edited message is not an inline message, the edited [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned.
 
 # Required arguments
 - `media`: (InputMedia) A JSON-serialized object for a new media content of the message
@@ -887,7 +906,7 @@ Use this method to edit only the reply markup of messages. On success, if the ed
 (:stopPoll, """
 	stopPoll([tg::TelegramClient]; kwargs...)
 
-Use this method to stop a poll which was sent by the bot. On success, the stopped [Poll](https://core.telegram.org/bots/api#poll) with the final results is returned.
+Use this method to stop a poll which was sent by the bot. On success, the stopped [Poll](https://core.telegram.org/bots/api#poll) is returned.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -1042,16 +1061,18 @@ Use this method to send answers to an inline query. On success, True is returned
 Use this method to send invoices. On success, the sent [Message](https://core.telegram.org/bots/api#message) is returned.
 
 # Required arguments
-- `chat_id`: (Integer) Unique identifier for the target private chat
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 - `title`: (String) Product name, 1-32 characters
 - `description`: (String) Product description, 1-255 characters
 - `payload`: (String) Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
 - `provider_token`: (String) Payments provider token, obtained via Botfather
-- `start_parameter`: (String) Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
 - `currency`: (String) Three-letter ISO 4217 currency code, see more on currencies
 - `prices`: (Array of LabeledPrice) Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
 
 # Optional arguments
+- `max_tip_amount`: (Integer) The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+- `suggested_tip_amounts`: (Array of Integer) A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+- `start_parameter`: (String) Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
 - `provider_data`: (String) A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
 - `photo_url`: (String) URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
 - `photo_size`: (Integer) Photo size
@@ -1133,7 +1154,7 @@ Use this method to send a game. On success, the sent [Message](https://core.tele
 (:setGameScore, """
 	setGameScore([tg::TelegramClient]; kwargs...)
 
-Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited [Message](https://core.telegram.org/bots/api#message), otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the [Message](https://core.telegram.org/bots/api#message) is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
 # Required arguments
 - `user_id`: (Integer) User identifier

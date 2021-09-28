@@ -64,7 +64,7 @@ getWebhookInfo
 * [`Telegram.sendChatAction`](@ref)
 * [`Telegram.getUserProfilePhotos`](@ref)
 * [`Telegram.getFile`](@ref)
-* [`Telegram.kickChatMember`](@ref)
+* [`Telegram.banChatMember`](@ref)
 * [`Telegram.unbanChatMember`](@ref)
 * [`Telegram.restrictChatMember`](@ref)
 * [`Telegram.promoteChatMember`](@ref)
@@ -84,12 +84,13 @@ getWebhookInfo
 * [`Telegram.leaveChat`](@ref)
 * [`Telegram.getChat`](@ref)
 * [`Telegram.getChatAdministrators`](@ref)
-* [`Telegram.getChatMembersCount`](@ref)
+* [`Telegram.getChatMemberCount`](@ref)
 * [`Telegram.getChatMember`](@ref)
 * [`Telegram.setChatStickerSet`](@ref)
 * [`Telegram.deleteChatStickerSet`](@ref)
 * [`Telegram.answerCallbackQuery`](@ref)
 * [`Telegram.setMyCommands`](@ref)
+* [`Telegram.deleteMyCommands`](@ref)
 * [`Telegram.getMyCommands`](@ref)
 
 ```@docs
@@ -189,7 +190,7 @@ getFile
 ```
 
 ```@docs
-kickChatMember
+banChatMember
 ```
 
 ```@docs
@@ -269,7 +270,7 @@ getChatAdministrators
 ```
 
 ```@docs
-getChatMembersCount
+getChatMemberCount
 ```
 
 ```@docs
@@ -290,6 +291,10 @@ answerCallbackQuery
 
 ```@docs
 setMyCommands
+```
+
+```@docs
+deleteMyCommands
 ```
 
 ```@docs
