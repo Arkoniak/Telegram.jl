@@ -10,7 +10,7 @@ for (f, fdoc) in TELEGRAM_API
             params = Dict{Symbol, Any}(kwargs)
             params[:chat_id] = get(params, :chat_id, Telegram.chatid(client))
             params[:parse_mode] = get(params, :parse_mode, client.parse_mode)
-            Telegram.query(client, $fs, params = params) # interpolation string directly, much faster
+            Telegram.query(client, $fs, params = params)
         end
 
         @doc $fdoc $f
