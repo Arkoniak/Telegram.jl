@@ -74,6 +74,8 @@ getWebhookInfo
 * [`Telegram.createChatInviteLink`](@ref)
 * [`Telegram.editChatInviteLink`](@ref)
 * [`Telegram.revokeChatInviteLink`](@ref)
+* [`Telegram.approveChatJoinRequest`](@ref)
+* [`Telegram.declineChatJoinRequest`](@ref)
 * [`Telegram.setChatPhoto`](@ref)
 * [`Telegram.deleteChatPhoto`](@ref)
 * [`Telegram.setChatTitle`](@ref)
@@ -227,6 +229,14 @@ editChatInviteLink
 
 ```@docs
 revokeChatInviteLink
+```
+
+```@docs
+approveChatJoinRequest
+```
+
+```@docs
+declineChatJoinRequest
 ```
 
 ```@docs

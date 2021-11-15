@@ -55,7 +55,7 @@ Use this method to get current webhook status. Requires no parameters. On succes
 (:getMe, """
 	getMe([tg::TelegramClient]; kwargs...)
 
-A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a [User](https://core.telegram.org/bots/api#user) object.
+A simple method for testing your bot's authentication token. Requires no parameters. Returns basic information about the bot in form of a [User](https://core.telegram.org/bots/api#user) object.
 
 [Function documentation source](https://core.telegram.org/bots/api#getme)
 """),
@@ -84,7 +84,7 @@ Use this method to send text messages. On success, the sent [Message](https://co
 
 # Optional arguments
 - `parse_mode`: (String) Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `entities`: (Array of MessageEntity) List of special entities that appear in message text, which can be specified instead of parse_mode
+- `entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
 - `disable_web_page_preview`: (Boolean) Disables link previews for links in this message
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
@@ -121,7 +121,7 @@ Use this method to copy messages of any kind. Service messages and invoice messa
 # Optional arguments
 - `caption`: (String) New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
 - `parse_mode`: (String) Mode for parsing entities in the new caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the new caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of parse_mode
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
 - `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
@@ -141,7 +141,7 @@ Use this method to send photos. On success, the sent [Message](https://core.tele
 # Optional arguments
 - `caption`: (String) Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the photo caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
 - `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
@@ -163,7 +163,7 @@ For sending voice messages, use the [`sendVoice`](@ref) method instead.
 # Optional arguments
 - `caption`: (String) Audio caption, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the audio caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `duration`: (Integer) Duration of the audio in seconds
 - `performer`: (String) Performer
 - `title`: (String) Track name
@@ -188,7 +188,7 @@ Use this method to send general files. On success, the sent [Message](https://co
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Document caption (may also be used when resending documents by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the document caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `disable_content_type_detection`: (Boolean) Disables automatic server-side content type detection for files uploaded using multipart/form-data
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
@@ -213,7 +213,7 @@ Use this method to send video files, Telegram clients support mp4 videos (other 
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Video caption (may also be used when resending videos by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the video caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `supports_streaming`: (Boolean) Pass True, if the uploaded video is suitable for streaming
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
@@ -238,7 +238,7 @@ Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without s
 - `thumb`: (InputFile or String) Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. [More info on Sending Files »](https://core.telegram.org/bots/api#sending-files)
 - `caption`: (String) Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the animation caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
 - `allow_sending_without_reply`: (Boolean) Pass True, if the message should be sent even if the specified replied-to message is not found
@@ -258,7 +258,7 @@ Use this method to send audio files, if you want Telegram clients to display the
 # Optional arguments
 - `caption`: (String) Voice message caption, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the voice message caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `duration`: (Integer) Duration of the voice message in seconds
 - `disable_notification`: (Boolean) Sends the message silently. Users will receive a notification with no sound.
 - `reply_to_message_id`: (Integer) If the message is a reply, ID of the original message
@@ -419,7 +419,7 @@ Use this method to send a native poll. On success, the sent [Message](https://co
 - `correct_option_id`: (Integer) 0-based identifier of the correct answer option, required for polls in quiz mode
 - `explanation`: (String) Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
 - `explanation_parse_mode`: (String) Mode for parsing entities in the explanation. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `explanation_entities`: (Array of MessageEntity) List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+- `explanation_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the poll explanation, which can be specified instead of parse_mode
 - `open_period`: (Integer) Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
 - `close_date`: (Integer) Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
 - `is_closed`: (Boolean) Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
@@ -458,7 +458,7 @@ We only recommend using this method when a response from the bot will take a not
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
-- `action`: (String) Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for [text messages](https://core.telegram.org/bots/api#sendmessage), upload_photo for [photos](https://core.telegram.org/bots/api#sendphoto), record_video or upload_video for [videos](https://core.telegram.org/bots/api#sendvideo), record_voice or upload_voice for [voice notes](https://core.telegram.org/bots/api#sendvoice), upload_document for [general files](https://core.telegram.org/bots/api#senddocument), find_location for [location data](https://core.telegram.org/bots/api#sendlocation), record_video_note or upload_video_note for [video notes](https://core.telegram.org/bots/api#sendvideonote).
+- `action`: (String) Type of action to broadcast. Choose one, depending on what the user is about to receive: typing for [text messages](https://core.telegram.org/bots/api#sendmessage), upload_photo for [photos](https://core.telegram.org/bots/api#sendphoto), record_video or upload_video for [videos](https://core.telegram.org/bots/api#sendvideo), record_voice or upload_voice for [voice notes](https://core.telegram.org/bots/api#sendvoice), upload_document for [general files](https://core.telegram.org/bots/api#senddocument), choose_sticker for [stickers](https://core.telegram.org/bots/api#sendsticker), find_location for [location data](https://core.telegram.org/bots/api#sendlocation), record_video_note or upload_video_note for [video notes](https://core.telegram.org/bots/api#sendvideonote).
 
 [Function documentation source](https://core.telegram.org/bots/api#sendchataction)
 """),
@@ -491,7 +491,7 @@ Note: This function may not preserve the original file name and MIME type. You s
 (:banChatMember, """
 	banChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to ban a user in a group, a supergroup or a channel. In the case of supergroups and channels, the user will not be able to return to the chat on their own using invite links, etc., unless [unbanned](https://core.telegram.org/bots/api#unbanchatmember) first. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target group or username of the target supergroup or channel (in the format `@channelusername`)
@@ -520,7 +520,7 @@ Use this method to unban a previously banned user in a supergroup or channel. Th
 (:restrictChatMember, """
 	restrictChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
+Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate administrator rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)
@@ -535,7 +535,7 @@ Use this method to restrict a user in a supergroup. The bot must be an administr
 (:promoteChatMember, """
 	promoteChatMember([tg::TelegramClient]; kwargs...)
 
-Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Pass False for all boolean parameters to demote a user. Returns True on success.
+Use this method to promote or demote a user in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Pass False for all boolean parameters to demote a user. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -571,18 +571,18 @@ Use this method to set a custom title for an administrator in a supergroup promo
 (:setChatPermissions, """
 	setChatPermissions([tg::TelegramClient]; kwargs...)
 
-Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members admin rights. Returns True on success.
+Use this method to set default chat permissions for all members. The bot must be an administrator in the group or a supergroup for this to work and must have the can_restrict_members administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)
-- `permissions`: (ChatPermissions) New default chat permissions
+- `permissions`: (ChatPermissions) A JSON-serialized object for new default chat permissions
 
 [Function documentation source](https://core.telegram.org/bots/api#setchatpermissions)
 """),
 (:exportChatInviteLink, """
 	exportChatInviteLink([tg::TelegramClient]; kwargs...)
 
-Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the new invite link as String on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -594,36 +594,40 @@ Note: Each administrator in a chat generates their own invite links. Bots can't 
 (:createChatInviteLink, """
 	createChatInviteLink([tg::TelegramClient]; kwargs...)
 
-Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. The link can be revoked using the method [`revokeChatInviteLink`](@ref). Returns the new invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+Use this method to create an additional invite link for a chat. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. The link can be revoked using the method [`revokeChatInviteLink`](@ref). Returns the new invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 
 # Optional arguments
+- `name`: (String) Invite link name; 0-32 characters
 - `expire_date`: (Integer) Point in time (Unix timestamp) when the link will expire
 - `member_limit`: (Integer) Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+- `creates_join_request`: (Boolean) True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
 
 [Function documentation source](https://core.telegram.org/bots/api#createchatinvitelink)
 """),
 (:editChatInviteLink, """
 	editChatInviteLink([tg::TelegramClient]; kwargs...)
 
-Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the edited invite link as a [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+Use this method to edit a non-primary invite link created by the bot. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the edited invite link as a [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
 - `invite_link`: (String) The invite link to edit
 
 # Optional arguments
+- `name`: (String) Invite link name; 0-32 characters
 - `expire_date`: (Integer) Point in time (Unix timestamp) when the link will expire
 - `member_limit`: (Integer) Maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999
+- `creates_join_request`: (Boolean) True, if users joining the chat via the link need to be approved by chat administrators. If True, member_limit can't be specified
 
 [Function documentation source](https://core.telegram.org/bots/api#editchatinvitelink)
 """),
 (:revokeChatInviteLink, """
 	revokeChatInviteLink([tg::TelegramClient]; kwargs...)
 
-Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the revoked invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
+Use this method to revoke an invite link created by the bot. If the primary link is revoked, a new link is automatically generated. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns the revoked invite link as [ChatInviteLink](https://core.telegram.org/bots/api#chatinvitelink) object.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier of the target chat or username of the target channel (in the format `@channelusername`)
@@ -631,10 +635,32 @@ Use this method to revoke an invite link created by the bot. If the primary link
 
 [Function documentation source](https://core.telegram.org/bots/api#revokechatinvitelink)
 """),
+(:approveChatJoinRequest, """
+	approveChatJoinRequest([tg::TelegramClient]; kwargs...)
+
+Use this method to approve a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+- `user_id`: (Integer) Unique identifier of the target user
+
+[Function documentation source](https://core.telegram.org/bots/api#approvechatjoinrequest)
+"""),
+(:declineChatJoinRequest, """
+	declineChatJoinRequest([tg::TelegramClient]; kwargs...)
+
+Use this method to decline a chat join request. The bot must be an administrator in the chat for this to work and must have the can_invite_users administrator right. Returns True on success.
+
+# Required arguments
+- `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
+- `user_id`: (Integer) Unique identifier of the target user
+
+[Function documentation source](https://core.telegram.org/bots/api#declinechatjoinrequest)
+"""),
 (:setChatPhoto, """
 	setChatPhoto([tg::TelegramClient]; kwargs...)
 
-Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -645,7 +671,7 @@ Use this method to set a new profile photo for the chat. Photos can't be changed
 (:deleteChatPhoto, """
 	deleteChatPhoto([tg::TelegramClient]; kwargs...)
 
-Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -655,7 +681,7 @@ Use this method to delete a chat photo. Photos can't be changed for private chat
 (:setChatTitle, """
 	setChatTitle([tg::TelegramClient]; kwargs...)
 
-Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -666,7 +692,7 @@ Use this method to change the title of a chat. Titles can't be changed for priva
 (:setChatDescription, """
 	setChatDescription([tg::TelegramClient]; kwargs...)
 
-Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+Use this method to change the description of a group, a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -679,7 +705,7 @@ Use this method to change the description of a group, a supergroup or a channel.
 (:pinChatMessage, """
 	pinChatMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -693,7 +719,7 @@ Use this method to add a message to the list of pinned messages in a chat. If th
 (:unpinChatMessage, """
 	unpinChatMessage([tg::TelegramClient]; kwargs...)
 
-Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -706,7 +732,7 @@ Use this method to remove a message from the list of pinned messages in a chat. 
 (:unpinAllChatMessages, """
 	unpinAllChatMessages([tg::TelegramClient]; kwargs...)
 
-Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+Use this method to clear the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' administrator right in a supergroup or 'can_edit_messages' administrator right in a channel. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)
@@ -767,7 +793,7 @@ Use this method to get information about a member of a chat. Returns a [ChatMemb
 (:setChatStickerSet, """
 	setChatStickerSet([tg::TelegramClient]; kwargs...)
 
-Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in [`getChat`](@ref) requests to check if the bot can use this method. Returns True on success.
+Use this method to set a new group sticker set for a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in [`getChat`](@ref) requests to check if the bot can use this method. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)
@@ -778,7 +804,7 @@ Use this method to set a new group sticker set for a supergroup. The bot must be
 (:deleteChatStickerSet, """
 	deleteChatStickerSet([tg::TelegramClient]; kwargs...)
 
-Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Use the field can_set_sticker_set optionally returned in [`getChat`](@ref) requests to check if the bot can use this method. Returns True on success.
+Use this method to delete a group sticker set from a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate administrator rights. Use the field can_set_sticker_set optionally returned in [`getChat`](@ref) requests to check if the bot can use this method. Returns True on success.
 
 # Required arguments
 - `chat_id`: (Integer or String) Unique identifier for the target chat or username of the target supergroup (in the format `@supergroupusername`)
@@ -797,7 +823,7 @@ Alternatively, the user can be redirected to the specified Game URL. For this op
 
 # Optional arguments
 - `text`: (String) Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters
-- `show_alert`: (Boolean) If true, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
+- `show_alert`: (Boolean) If True, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to false.
 - `url`: (String) URL that will be opened by the user's client. If you have created a [Game](https://core.telegram.org/bots/api#game) and accepted the conditions via @Botfather, specify the URL that opens your game — note that this will only work if the query comes from a [callback_game](https://core.telegram.org/bots/api#inlinekeyboardbutton) button.Otherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter.
 - `cache_time`: (Integer) The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
 
@@ -852,7 +878,7 @@ Use this method to edit text and [game](https://core.telegram.org/bots/api#games
 - `message_id`: (Integer) Required if inline_message_id is not specified. Identifier of the message to edit
 - `inline_message_id`: (String) Required if chat_id and message_id are not specified. Identifier of the inline message
 - `parse_mode`: (String) Mode for parsing entities in the message text. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `entities`: (Array of MessageEntity) List of special entities that appear in message text, which can be specified instead of parse_mode
+- `entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in message text, which can be specified instead of parse_mode
 - `disable_web_page_preview`: (Boolean) Disables link previews for links in this message
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard.
 
@@ -869,7 +895,7 @@ Use this method to edit captions of messages. On success, if the edited message 
 - `inline_message_id`: (String) Required if chat_id and message_id are not specified. Identifier of the inline message
 - `caption`: (String) New caption of the message, 0-1024 characters after entities parsing
 - `parse_mode`: (String) Mode for parsing entities in the message caption. See [formatting options](https://core.telegram.org/bots/api#formatting-options) for more details.
-- `caption_entities`: (Array of MessageEntity) List of special entities that appear in the caption, which can be specified instead of parse_mode
+- `caption_entities`: (Array of MessageEntity) A JSON-serialized list of special entities that appear in the caption, which can be specified instead of parse_mode
 - `reply_markup`: (InlineKeyboardMarkup) A JSON-serialized object for an inline keyboard.
 
 [Function documentation source](https://core.telegram.org/bots/api#editmessagecaption)
@@ -1051,7 +1077,7 @@ Use this method to send answers to an inline query. On success, True is returned
 - `is_personal`: (Boolean) Pass True, if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query
 - `next_offset`: (String) Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes.
 - `switch_pm_text`: (String) If passed, clients will display a button with specified text that switches the user to a private chat with the bot and sends the bot a start message with the parameter switch_pm_parameter
-- `switch_pm_parameter`: (String) Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an oauth link. Once done, the bot can offer a [switch_inline](https://core.telegram.org/bots/api#inlinekeyboardmarkup) button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
+- `switch_pm_parameter`: (String) Deep-linking parameter for the /start message sent to the bot when user presses the switch button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.Example: An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a [switch_inline](https://core.telegram.org/bots/api#inlinekeyboardmarkup) button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities.
 
 [Function documentation source](https://core.telegram.org/bots/api#answerinlinequery)
 """),
@@ -1070,7 +1096,7 @@ Use this method to send invoices. On success, the sent [Message](https://core.te
 - `prices`: (Array of LabeledPrice) Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
 
 # Optional arguments
-- `max_tip_amount`: (Integer) The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of `US 1.45` pass `max_tip_amount = 145`. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+- `max_tip_amount`: (Integer) The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
 - `suggested_tip_amounts`: (Array of Integer) A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
 - `start_parameter`: (String) Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
 - `provider_data`: (String) A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
