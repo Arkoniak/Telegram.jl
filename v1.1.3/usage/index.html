@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Usage · Telegram.jl</title><script data-outdated-warner src="../assets/warner.js"></script><link rel="canonical" href="https://Arkoniak.github.io/Telegram.jl/usage/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.039/juliamono-regular.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.11/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="https://github.com/Arkoniak/Telegram.jl">Telegram.jl</a></span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../reference/">API Reference</a></li><li class="is-active"><a class="tocitem" href>Usage</a><ul class="internal"><li><a class="tocitem" href="#Setting-up-telegram-token-and-chat_id"><span>Setting up telegram token and chat_id</span></a></li><li><a class="tocitem" href="#Initializing-TelegramClient"><span>Initializing <code>TelegramClient</code></span></a></li><li><a class="tocitem" href="#Using-Telegram-Bot-API"><span>Using Telegram Bot API</span></a></li><li><a class="tocitem" href="#Sending-messages"><span>Sending messages</span></a></li><li><a class="tocitem" href="#Logging"><span>Logging</span></a></li><li><a class="tocitem" href="#Bots"><span>Bots</span></a></li></ul></li><li><a class="tocitem" href="../developers/">Developer guide</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Usage</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Usage</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/Arkoniak/Telegram.jl/blob/master/docs/src/usage.md#L" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Usage"><a class="docs-heading-anchor" href="#Usage">Usage</a><a id="Usage-1"></a><a class="docs-heading-anchor-permalink" href="#Usage" title="Permalink"></a></h1><h2 id="Setting-up-telegram-token-and-chat_id"><a class="docs-heading-anchor" href="#Setting-up-telegram-token-and-chat_id">Setting up telegram token and chat_id</a><a id="Setting-up-telegram-token-and-chat_id-1"></a><a class="docs-heading-anchor-permalink" href="#Setting-up-telegram-token-and-chat_id" title="Permalink"></a></h2><p>In all examples of this section, it is assumed for simplicity that you set telegram token and chat_id in <code>TELEGRAM_BOT_TOKEN</code> and <code>TELEGRAM_BOT_CHAT_ID</code> environment variables correspondingly. Recommended way to do it, by using <a href="https://github.com/Arkoniak/ConfigEnv.jl">ConfigEnv.jl</a>. You should create file <code>.env</code></p><pre><code class="nohighlight"># .env
+TELEGRAM_BOT_TOKEN = 123456:ababababababbabababababbababaab
+TELEGRAM_BOT_CHAT_ID = 1234567</code></pre><p>And at the beginning of the application, populate <code>ENV</code> with the <code>dotenv</code> function. <code>Telegram.jl</code> methods will use these variables automatically. Alternatively (but less secure) you can provide <code>token</code> and <code>chat_id</code> via <code>TelegramClient</code> constructor.</p><p>In order to get token itself, you should follow <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">this instruction</a>. Just talk to <code>BotFather</code> and after few simple questions you will receive the token.</p><p>Easiest way to obtain chat_id is through running simple print bot.</p><pre><code class="language-julia">using Telegram
+using ConfigEnv
+
+dotenv()
+
+run_bot() do msg
+    println(msg)
+end</code></pre><p>After running this script just open chat with your newly created bot and send it any message. You will receive something like this</p><pre><code class="nohighlight">{
+   &quot;update_id&quot;: 87654321,
+     &quot;message&quot;: {
+                   &quot;message_id&quot;: 6789,
+                         &quot;from&quot;: {
+                                               &quot;id&quot;: 123456789,
+                                           &quot;is_bot&quot;: false,
+                                    &quot;language_code&quot;: &quot;en&quot;
+                                 },
+                         &quot;chat&quot;: {
+                                            &quot;id&quot;: 123456789,
+                                          &quot;type&quot;: &quot;private&quot;
+                                 },
+                         &quot;date&quot;: 1592767594,
+                         &quot;text&quot;: &quot;Hello&quot;
+                }
+}</code></pre><p>In this example, field <code>message.chat.id = 123456789</code> is necessary <code>chat_id</code> which shoud be stored in <code>TELEGRAM_BOT_CHAT_ID</code> variable.</p><h2 id="Initializing-TelegramClient"><a class="docs-heading-anchor" href="#Initializing-TelegramClient">Initializing <code>TelegramClient</code></a><a id="Initializing-TelegramClient-1"></a><a class="docs-heading-anchor-permalink" href="#Initializing-TelegramClient" title="Permalink"></a></h2><p>If you set <code>ENV</code> variables <code>TELEGRAM_BOT_TOKEN</code> and <code>TELEGRAM_BOT_CHAT_ID</code>, then telegram client use them to run all commands. Alternatively you can initialize client by passing required token parameter.</p><pre><code class="language-julia">using Telegram
+
+tg = TelegramClient(&quot;TELEGRAM BOT TOKEN&quot;)</code></pre><p>Since <a href="https://github.com/Arkoniak/Telegram.jl">Telegram.jl</a> was built with the first-class support of the Telegram as a notification system, you can pass <code>chat_id</code> variable, which will be used then by default in every function related to messaging</p><pre><code class="language-julia">using Telegram
+
+tg = TelegramClient(&quot;TELEGRAM BOT TOKEN&quot;; chat_id = &quot;DEFAULT TELEGRAM CHAT ID&quot;)
+
+Telegram.sendMessage(tg, text = &quot;Hello world&quot;) # will send &quot;Hello world&quot; message 
+                                               # to chat defined in `tg.chat_id`</code></pre><p>Also, by default new <code>TelegramClient</code> is used globally in all <a href="../reference/#API-Reference">API Reference</a> related functions, so you can run commands like</p><pre><code class="language-julia">using Telegram
+using ConfigEnv
+
+dotenv()
+
+Telegram.sendMessage(text = &quot;Hello world&quot;)</code></pre><p>which will send &quot;Hello world&quot; message to the chat defined by <code>ENV[&quot;TELEGRAM_BOT_CHAT_ID&quot;]</code> variable with the bot defined by <code>ENV[&quot;TELEGRAM_BOT_TOKEN&quot;]</code> variable.</p><p>In order to override this behaviour you can set <code>use_globally</code> argument of <a href="../#Telegram.TelegramClient"><code>TelegramClient</code></a> function. To set previously defined client as a global, you should use <a href="../#Telegram.useglobally!-Tuple{TelegramClient}"><code>useglobally!</code></a>.</p><h2 id="Using-Telegram-Bot-API"><a class="docs-heading-anchor" href="#Using-Telegram-Bot-API">Using Telegram Bot API</a><a id="Using-Telegram-Bot-API-1"></a><a class="docs-heading-anchor-permalink" href="#Using-Telegram-Bot-API" title="Permalink"></a></h2><p>Due to the rather large number of functions defined in <a href="../reference/#API-Reference">API Reference</a>, they are hidden behind module declaration, so by default they should be prefixed with <code>Telegram.</code></p><pre><code class="language-julia">using Telegram
+using ConfigEnv
+
+dotenv()
+
+Telegram.getMe() # returns information about bot</code></pre><p>If this is inconvenient for some reason, you can either introduce new and short constant name, like this</p><pre><code class="language-julia">using Telegram
+using ConfigEnv
+const TG = Telegram
+
+dotenv()
+
+TG.getMe()</code></pre><p>or you can import all telegram Bot API by <code>using Telegram.API</code>, in this scenario you do not need to use any prefixes</p><pre><code class="language-julia">using Telegram
+using Telegram.API
+using ConfigEnv
+
+dotenv()
+
+getMe()</code></pre><p>In what follows we will use latter approach.</p><h2 id="Sending-messages"><a class="docs-heading-anchor" href="#Sending-messages">Sending messages</a><a id="Sending-messages-1"></a><a class="docs-heading-anchor-permalink" href="#Sending-messages" title="Permalink"></a></h2><p>If you set telegram client globally with <code>chat_id</code> as it is described in previous sections, then you can use message related function from <a href="../reference/#API-Reference">API Reference</a>, omitting <code>chat_id</code> argument. For example, this is how you can use most basic <code>sendMessage</code> function</p><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+
+dotenv()
+
+sendMessage(text = &quot;Hello world&quot;)</code></pre><p>Of course if you have more than one client or writing a bot which should communicate in multiple chats, you can add this parameters to function calls and they will override default values, for example</p><pre><code class="nohighlight"># .env
+TG_TOKEN = 123456:asdasd
+TG_TOKEN2 = 546789:zxczxc
+TG_CHAT_ID = 1234</code></pre><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+
+dotenv()
+
+tg1 = TelegramClient(ENV[&quot;TG_TOKEN&quot;]; chat_id = ENV[&quot;TG_CHAT_ID&quot;])
+tg2 = TelegramClient(ENV[&quot;TG_TOKEN2&quot;])
+
+sendMessage(tg1, text = &quot;I am bot number 1&quot;, chat_id = 12345)
+sendMessage(tg2, text = &quot;I am bot number 2&quot;, chat_id = 54321)</code></pre><p>will send messages from two different telegram bots to two different chats. It is useful for example, when you have telegram bot communicating with users and at the same time error logs of this bot is being sent to another chat by error reporting bot.</p><p>In addition to text messages you can also send any sort of <code>IO</code> objects: images, audio, documents and so on. For example to send picture you can do something like this</p><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+
+dotenv()
+
+open(&quot;picture.jpg&quot;, &quot;r&quot;) do io
+    sendPhoto(photo = io)
+end
+
+# or if you want it quick and dirty
+sendPhoto(photo = open(&quot;picture.jpg&quot;, &quot;r&quot;))</code></pre><p>Data sending is not limited by files only, you can send memory objects as well, in this case you should give them name in the form of <code>Pair</code></p><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+
+dotenv()
+
+io = IOBuffer()
+print(io, &quot;Hello world!&quot;)
+sendDocument(document = &quot;hello.txt&quot; =&gt; io)</code></pre><h2 id="Logging"><a class="docs-heading-anchor" href="#Logging">Logging</a><a id="Logging-1"></a><a class="docs-heading-anchor-permalink" href="#Logging" title="Permalink"></a></h2><p>You can also use <a href="https://github.com/Arkoniak/Telegram.jl">Telegram.jl</a> as a logging system, for this you are provided with special <a href="../#Telegram.TelegramLogger-Tuple{TelegramClient}"><code>TelegramLogger</code></a> structure. It accepts <code>TelegramClient</code> object which must have initialized <code>chat_id</code> parameter</p><pre><code class="language-julia">using Telegram
+using Logging
+using ConfigEnv
+
+dotenv()
+
+tg = TelegramClient()
+tg_logger = TelegramLogger(tg; async = false)
+
+with_logger(tg_logger) do
+    @info &quot;Hello from telegram logger!&quot;
+end</code></pre><p>But even better it is used together with <a href="https://github.com/oxinabox/LoggingExtras.jl">LoggingExtras.jl</a> package, which can demux log messages and send critical messages to telegram backend without interrupting normal logging flow</p><pre><code class="language-julia">using Telegram
+using Logging, LoggingExtras
+using ConfigEnv
+
+dotenv()
+
+tg = TelegramClient()
+tg_logger = TelegramLogger(tg; async = false)
+demux_logger = TeeLogger(
+    MinLevelLogger(tg_logger, Logging.Error),
+    ConsoleLogger()
+)
+global_logger(demux_logger)
+
+@warn &quot;It is bad&quot;        # goes to console
+@info &quot;normal stuff&quot;     # goes to console
+@error &quot;THE WORSE THING&quot; # goes to console and telegram
+@debug &quot;it is chill&quot;     # goes to console</code></pre><p>This way, just by adding few configuration lines, you can have unchanged logging system with telegram instant messaging if anything critically important happened.</p><p>Also, take notion of <code>async</code> argument of <code>TelegramLogger</code>. There are two modes of operating, usual and asynchronous. Second is useful if you have long running program and you do not want it to pause and send telegram message, so usual scenario is like this</p><pre><code class="language-julia">while true
+    try
+        # do some stuff
+    catch err
+        @error err
+        # process error
+    end
+end    </code></pre><p>But asynchronous mode has it&#39;s drawbacks, consider this for example</p><pre><code class="language-julia">try
+    sqrt(:a)
+catch err
+    @error err
+end</code></pre><p>if you run this snippet (with proper logger initialization) from command line, main thread  stops before asynchronous message to telegram is sent. In such cases, it make sense to set <code>async = false</code></p><h2 id="Bots"><a class="docs-heading-anchor" href="#Bots">Bots</a><a id="Bots-1"></a><a class="docs-heading-anchor-permalink" href="#Bots" title="Permalink"></a></h2><h3 id="Echo-bot"><a class="docs-heading-anchor" href="#Echo-bot">Echo bot</a><a id="Echo-bot-1"></a><a class="docs-heading-anchor-permalink" href="#Echo-bot" title="Permalink"></a></h3><p>With the help of <a href="../#Telegram.run_bot"><code>run_bot</code></a> method it&#39;s quite simple to set up simple telegram bots.</p><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+
+dotenv()
+
+# Echo bot
+run_bot() do msg
+    sendMessage(text = msg.message.text, chat_id = msg.message.chat.id)
+end</code></pre><h3 id="Turtle-graphics-bot"><a class="docs-heading-anchor" href="#Turtle-graphics-bot">Turtle graphics bot</a><a id="Turtle-graphics-bot-1"></a><a class="docs-heading-anchor-permalink" href="#Turtle-graphics-bot" title="Permalink"></a></h3><p>In this example we build more advanced bot, which is generating <a href="http://juliagraphics.github.io/Luxor.jl/stable/turtle/">turtle graphics</a> with the help of <a href="https://github.com/JuliaGraphics/Luxor.jl">Luxor.jl</a> package.</p><p>In addition to previous echo bot, this can do the following</p><ol><li>Generate and send images in memory, without storing them in file system</li><li>Generate virtual keyboard, which can be used by users to make input easier</li></ol><pre><code class="language-julia">using Telegram, Telegram.API
+using ConfigEnv
+using Luxor
+
+dotenv()
+
+&quot;&quot;&quot;
+    draw_turtle(angles::AbstractVector)
+    
+Draw turtle graphics, where turtle is moving in spiral, on each step rotating
+on next angle from `angles` vector. Vector `angles` is repeated cyclically.
+&quot;&quot;&quot;
+function draw_turtle(angles)
+    d = Drawing(600, 400, :png)
+    origin()
+    background(&quot;midnightblue&quot;)
+
+    🐢 = Turtle() # you can type the turtle emoji with \:turtle:
+    Pencolor(🐢, &quot;cyan&quot;)
+    Penwidth(🐢, 1.5)
+    n = 5.0
+    dn = 1.0/length(angles)*0.7
+    for i in 1:400
+        for angle in angles
+            Forward(🐢, n)
+            Turn(🐢, angle)
+            n += dn
+        end
+        HueShift(🐢)
+    end
+    finish()
+
+    return d
+end
+
+&quot;&quot;&quot;
+    build_keyboard()
+    
+Generates [telegram keyboard](https://core.telegram.org/bots#keyboards) in the
+form of 3x3 grid of buttons.
+&quot;&quot;&quot;
+function build_keyboard()
+    keyboard = Vector{Vector{String}}()
+    for x in 1:3
+        row = String[]
+        for y in 1:3
+            s = join(string.(Int.(round.(rand(rand(1:4)) * 360))), &quot; &quot;)
+            push!(row, s)
+        end
+        push!(keyboard, row)
+    end
+
+    return Dict(:keyboard =&gt; keyboard, :one_time_keyboard =&gt; true)
+end
+
+run_bot() do msg
+    message = get(msg, :message, nothing)
+    message === nothing &amp;&amp; return nothing
+    text = get(message, :text, &quot;&quot;)
+    chat = get(message, :chat, nothing)
+    chat === nothing &amp;&amp; return nothing
+    chat_id = get(chat, :id, nothing)
+    chat_id === nothing &amp;&amp; return nothing
+    
+    if match(r&quot;^[0-9 \.]+$&quot;, text) !== nothing
+        angles = parse.(Float64, split(text, &quot; &quot;))
+        turtle = draw_turtle(angles)
+        sendPhoto(photo = &quot;turtle.png&quot; =&gt; turtle.buffer, reply_markup = build_keyboard(), chat_id = chat_id)
+    else
+        sendMessage(text = &quot;Unknown command, please provide turtle instructions in the form `angle1 angle2` or use keyboard&quot;, reply_markup = build_keyboard(), chat_id = chat_id, parse_mode = &quot;MarkdownV2&quot;)
+    end
+end</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../reference/">« API Reference</a><a class="docs-footer-nextpage" href="../developers/">Developer guide »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 6 July 2022 09:02">Wednesday 6 July 2022</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
