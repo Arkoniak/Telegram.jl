@@ -69,6 +69,8 @@ getWebhookInfo
 * [`Telegram.restrictChatMember`](@ref)
 * [`Telegram.promoteChatMember`](@ref)
 * [`Telegram.setChatAdministratorCustomTitle`](@ref)
+* [`Telegram.banChatSenderChat`](@ref)
+* [`Telegram.unbanChatSenderChat`](@ref)
 * [`Telegram.setChatPermissions`](@ref)
 * [`Telegram.exportChatInviteLink`](@ref)
 * [`Telegram.createChatInviteLink`](@ref)
@@ -90,10 +92,21 @@ getWebhookInfo
 * [`Telegram.getChatMember`](@ref)
 * [`Telegram.setChatStickerSet`](@ref)
 * [`Telegram.deleteChatStickerSet`](@ref)
+* [`Telegram.getForumTopicIconStickers`](@ref)
+* [`Telegram.createForumTopic`](@ref)
+* [`Telegram.editForumTopic`](@ref)
+* [`Telegram.closeForumTopic`](@ref)
+* [`Telegram.reopenForumTopic`](@ref)
+* [`Telegram.deleteForumTopic`](@ref)
+* [`Telegram.unpinAllForumTopicMessages`](@ref)
 * [`Telegram.answerCallbackQuery`](@ref)
 * [`Telegram.setMyCommands`](@ref)
 * [`Telegram.deleteMyCommands`](@ref)
 * [`Telegram.getMyCommands`](@ref)
+* [`Telegram.setChatMenuButton`](@ref)
+* [`Telegram.getChatMenuButton`](@ref)
+* [`Telegram.setMyDefaultAdministratorRights`](@ref)
+* [`Telegram.getMyDefaultAdministratorRights`](@ref)
 
 ```@docs
 getMe
@@ -212,6 +225,14 @@ setChatAdministratorCustomTitle
 ```
 
 ```@docs
+banChatSenderChat
+```
+
+```@docs
+unbanChatSenderChat
+```
+
+```@docs
 setChatPermissions
 ```
 
@@ -296,6 +317,34 @@ deleteChatStickerSet
 ```
 
 ```@docs
+getForumTopicIconStickers
+```
+
+```@docs
+createForumTopic
+```
+
+```@docs
+editForumTopic
+```
+
+```@docs
+closeForumTopic
+```
+
+```@docs
+reopenForumTopic
+```
+
+```@docs
+deleteForumTopic
+```
+
+```@docs
+unpinAllForumTopicMessages
+```
+
+```@docs
 answerCallbackQuery
 ```
 
@@ -309,6 +358,22 @@ deleteMyCommands
 
 ```@docs
 getMyCommands
+```
+
+```@docs
+setChatMenuButton
+```
+
+```@docs
+getChatMenuButton
+```
+
+```@docs
+setMyDefaultAdministratorRights
+```
+
+```@docs
+getMyDefaultAdministratorRights
 ```
 
 ## Updating messages
@@ -348,6 +413,7 @@ deleteMessage
 
 * [`Telegram.sendSticker`](@ref)
 * [`Telegram.getStickerSet`](@ref)
+* [`Telegram.getCustomEmojiStickers`](@ref)
 * [`Telegram.uploadStickerFile`](@ref)
 * [`Telegram.createNewStickerSet`](@ref)
 * [`Telegram.addStickerToSet`](@ref)
@@ -361,6 +427,10 @@ sendSticker
 
 ```@docs
 getStickerSet
+```
+
+```@docs
+getCustomEmojiStickers
 ```
 
 ```@docs
@@ -390,19 +460,29 @@ setStickerSetThumb
 ## Inline mode
 
 * [`Telegram.answerInlineQuery`](@ref)
+* [`Telegram.answerWebAppQuery`](@ref)
 
 ```@docs
 answerInlineQuery
 ```
 
+```@docs
+answerWebAppQuery
+```
+
 ## Payments
 
 * [`Telegram.sendInvoice`](@ref)
+* [`Telegram.createInvoiceLink`](@ref)
 * [`Telegram.answerShippingQuery`](@ref)
 * [`Telegram.answerPreCheckoutQuery`](@ref)
 
 ```@docs
 sendInvoice
+```
+
+```@docs
+createInvoiceLink
 ```
 
 ```@docs
