@@ -55,8 +55,6 @@ getWebhookInfo
 * [`Telegram.sendVideoNote`](@ref)
 * [`Telegram.sendMediaGroup`](@ref)
 * [`Telegram.sendLocation`](@ref)
-* [`Telegram.editMessageLiveLocation`](@ref)
-* [`Telegram.stopMessageLiveLocation`](@ref)
 * [`Telegram.sendVenue`](@ref)
 * [`Telegram.sendContact`](@ref)
 * [`Telegram.sendPoll`](@ref)
@@ -99,10 +97,21 @@ getWebhookInfo
 * [`Telegram.reopenForumTopic`](@ref)
 * [`Telegram.deleteForumTopic`](@ref)
 * [`Telegram.unpinAllForumTopicMessages`](@ref)
+* [`Telegram.editGeneralForumTopic`](@ref)
+* [`Telegram.closeGeneralForumTopic`](@ref)
+* [`Telegram.reopenGeneralForumTopic`](@ref)
+* [`Telegram.hideGeneralForumTopic`](@ref)
+* [`Telegram.unhideGeneralForumTopic`](@ref)
 * [`Telegram.answerCallbackQuery`](@ref)
 * [`Telegram.setMyCommands`](@ref)
 * [`Telegram.deleteMyCommands`](@ref)
 * [`Telegram.getMyCommands`](@ref)
+* [`Telegram.setMyName`](@ref)
+* [`Telegram.getMyName`](@ref)
+* [`Telegram.setMyDescription`](@ref)
+* [`Telegram.getMyDescription`](@ref)
+* [`Telegram.setMyShortDescription`](@ref)
+* [`Telegram.getMyShortDescription`](@ref)
 * [`Telegram.setChatMenuButton`](@ref)
 * [`Telegram.getChatMenuButton`](@ref)
 * [`Telegram.setMyDefaultAdministratorRights`](@ref)
@@ -166,14 +175,6 @@ sendMediaGroup
 
 ```@docs
 sendLocation
-```
-
-```@docs
-editMessageLiveLocation
-```
-
-```@docs
-stopMessageLiveLocation
 ```
 
 ```@docs
@@ -345,6 +346,26 @@ unpinAllForumTopicMessages
 ```
 
 ```@docs
+editGeneralForumTopic
+```
+
+```@docs
+closeGeneralForumTopic
+```
+
+```@docs
+reopenGeneralForumTopic
+```
+
+```@docs
+hideGeneralForumTopic
+```
+
+```@docs
+unhideGeneralForumTopic
+```
+
+```@docs
 answerCallbackQuery
 ```
 
@@ -358,6 +379,30 @@ deleteMyCommands
 
 ```@docs
 getMyCommands
+```
+
+```@docs
+setMyName
+```
+
+```@docs
+getMyName
+```
+
+```@docs
+setMyDescription
+```
+
+```@docs
+getMyDescription
+```
+
+```@docs
+setMyShortDescription
+```
+
+```@docs
+getMyShortDescription
 ```
 
 ```@docs
@@ -381,6 +426,8 @@ getMyDefaultAdministratorRights
 * [`Telegram.editMessageText`](@ref)
 * [`Telegram.editMessageCaption`](@ref)
 * [`Telegram.editMessageMedia`](@ref)
+* [`Telegram.editMessageLiveLocation`](@ref)
+* [`Telegram.stopMessageLiveLocation`](@ref)
 * [`Telegram.editMessageReplyMarkup`](@ref)
 * [`Telegram.stopPoll`](@ref)
 * [`Telegram.deleteMessage`](@ref)
@@ -395,6 +442,14 @@ editMessageCaption
 
 ```@docs
 editMessageMedia
+```
+
+```@docs
+editMessageLiveLocation
+```
+
+```@docs
+stopMessageLiveLocation
 ```
 
 ```@docs
@@ -419,7 +474,13 @@ deleteMessage
 * [`Telegram.addStickerToSet`](@ref)
 * [`Telegram.setStickerPositionInSet`](@ref)
 * [`Telegram.deleteStickerFromSet`](@ref)
-* [`Telegram.setStickerSetThumb`](@ref)
+* [`Telegram.setStickerEmojiList`](@ref)
+* [`Telegram.setStickerKeywords`](@ref)
+* [`Telegram.setStickerMaskPosition`](@ref)
+* [`Telegram.setStickerSetTitle`](@ref)
+* [`Telegram.setStickerSetThumbnail`](@ref)
+* [`Telegram.setCustomEmojiStickerSetThumbnail`](@ref)
+* [`Telegram.deleteStickerSet`](@ref)
 
 ```@docs
 sendSticker
@@ -454,7 +515,31 @@ deleteStickerFromSet
 ```
 
 ```@docs
-setStickerSetThumb
+setStickerEmojiList
+```
+
+```@docs
+setStickerKeywords
+```
+
+```@docs
+setStickerMaskPosition
+```
+
+```@docs
+setStickerSetTitle
+```
+
+```@docs
+setStickerSetThumbnail
+```
+
+```@docs
+setCustomEmojiStickerSetThumbnail
+```
+
+```@docs
+deleteStickerSet
 ```
 
 ## Inline mode
